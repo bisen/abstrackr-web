@@ -1,4 +1,4 @@
-import pdb 
+import pdb
 
 import numpy as np
 
@@ -12,29 +12,29 @@ class Dataset:
     def __init__(self, ids, titles, abstracts, mesh, lbl_dict, name=None, 
                     stop_word_fpath="abstrackr/lib/stop_list.txt"):
         '''
-        assumes the ordering of ids is the same as the ordering of titles 
-        and abstracts! 
+        assumes the ordering of ids is the same as the ordering of titles
+        and abstracts!
         '''
         self.all_ids = ids
         self.N = len(self.all_ids)
         self.ids_to_indices = dict(zip(self.all_ids, range(self.N)))
 
         for i, id_ in enumerate(self.all_ids):
-            self.ids_to_indices[id_] = i 
-        
+            self.ids_to_indices[id_] = i
+
         self.titles = self._replace_None(titles)
         self.abstracts = self._replace_None(abstracts)
         #pdb.set_trace()
- 
+
         # 9/3 -- fix for case in which abstracts are all empty
         if not any([a != "" for a in abstracts]):
           abstracts = ["dummy" for i in xrange(len(abstracts))]
 
         # do we need to do the same for mesh?
         self.mesh = self._replace_None(mesh)
-        
+
         assert(len(ids) == len(titles) == len(abstracts))
-        
+
         self.lbl_dict = lbl_dict
 
         print "done. now reading labels in..."
@@ -49,7 +49,7 @@ class Dataset:
         for i, x_i in enumerate(x):
             if x_i is None:
                 x[i] = ""
-        
+
         return x
 
     def __len__(self):
@@ -59,7 +59,7 @@ class Dataset:
         train_indices = self._get_train_indices()
         if len(train_indices) == 0:
             raise Exception, "nothing has been labeled yet!"
-        
+
         return self.get_X_y(indices=train_indices)
 
     def _get_train_indices(self):
@@ -92,20 +92,20 @@ class Dataset:
         return self.abstracts_X, self.titles_X, self.mesh_X, self.l1s
 
     def encode(self):
-        self.abstracts_vectorizer = TfidfVectorizer(ngram_range=(1,2), max_features=50000, min_df=3, 
+        self.abstracts_vectorizer = TfidfVectorizer(ngram_range=(1,2), max_features=50000, min_df=3, decode_error='ignore',
                                                     stop_words=self.stopwords)
         print "vectorizing abstracts..."
         self.abstracts_X = self.abstracts_vectorizer.fit_transform(self.abstracts)
         print "done. %s abstract features. now titles ..." % self.abstracts_X.shape[1]
 
-        self.titles_vectorizer = TfidfVectorizer(ngram_range=(1,2), max_features=50000, min_df=3, 
+        self.titles_vectorizer = TfidfVectorizer(ngram_range=(1,2), max_features=50000, min_df=3, decode_error='ignore',
                                                     stop_words=self.stopwords)
         self.titles_X = self.titles_vectorizer.fit_transform(self.titles)
         print "ok. %s title features." % self.titles_X.shape[1]
         self.mesh_X = None
-        
+
         print "and finally, mesh..."
-        self.mesh_vectorizer = TfidfVectorizer(max_features=50000, min_df=3)
+        self.mesh_vectorizer = TfidfVectorizer(max_features=50000, min_df=3, decode_error='ignore')
         try:
             self.mesh_X = self.mesh_vectorizer.fit_transform(self.mesh)
             print "ok -- %s mesh features." % self.mesh_X.shape[1]

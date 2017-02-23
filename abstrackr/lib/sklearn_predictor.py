@@ -96,7 +96,6 @@ class BaggedUSLearner:
         #test_X, test_y = self.dataset.get_test_X_y()
         X_titles, X_abstracts, X_mesh, y = self.dataset.get_test_X_y()
         ids = self.dataset.get_test_ids()
-
         predictions = []
         predicted_probabilities = []
         for ensemble in self.ensemble:

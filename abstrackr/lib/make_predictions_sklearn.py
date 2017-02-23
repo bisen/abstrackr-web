@@ -29,12 +29,12 @@ metadata = MetaData(bind=engine)
 ### 
 # table binding.
 #encoded_status = Table("EncodedStatuses", metadata, autoload=True) # we no longer need this.
-prediction_status = Table("PredictionStatuses", metadata, autoload=True)
-predictions_table = Table("Predictions", metadata, autoload=True)
-citations = Table("Citations", metadata, autoload=True)
+prediction_status = Table("predictionstatuses", metadata, autoload=True)
+predictions_table = Table("predictions", metadata, autoload=True)
+citations = Table("citations", metadata, autoload=True)
 priorities = Table("priorities", metadata, autoload=True)
-labels = Table("Labels", metadata, autoload=True)
-reviews = Table("Projects", metadata, autoload=True)
+labels = Table("labels", metadata, autoload=True)
+reviews = Table("projects", metadata, autoload=True)
 users = Table("user", metadata, autoload=True)
 labeled_features = Table("labeledfeatures", metadata, autoload=True)
 #encoded_status = Table("encodedstatuses", metadata, autoload=True)
