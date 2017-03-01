@@ -73,7 +73,7 @@ class Dataset:
         return self.get_X_y(indices=test_indices)
 
     def get_test_ids(self):
-        return self.unlabeled_ids
+        return self.all_ids
 
     def get_train_level_1_y(self):
         train_indices = self._get_train_indices()

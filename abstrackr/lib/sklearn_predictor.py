@@ -94,8 +94,10 @@ class BaggedUSLearner:
     # with 
     def predict_remaining(self, return_true_labels=False):
         #test_X, test_y = self.dataset.get_test_X_y()
-        X_titles, X_abstracts, X_mesh, y = self.dataset.get_test_X_y()
+        X_titles, X_abstracts, X_mesh, y = self.dataset.get_X_y()
+        print ">>>>>>>>>>>>>>>>>>"
         ids = self.dataset.get_test_ids()
+        print "<<<<<<<<<<<<<<<<<"
         predictions = []
         predicted_probabilities = []
         for ensemble in self.ensemble:
